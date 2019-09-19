@@ -23,6 +23,10 @@ const store = new Store({
       type: 'string',
       default: `${homedir()}/Movies/Kaptures`
     },
+    recordDir: {
+      type: 'string',
+      default: `${homedir()}/Movies/Raw Kaptures`
+    },
     allowAnalytics: {
       type: 'boolean',
       default: true

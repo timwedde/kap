@@ -17,6 +17,7 @@ class General extends React.Component {
   static defaultProps = {
     audioDevices: [],
     kapturesDir: '',
+    recordDir: '',
     category: 'general'
   }
 
@@ -32,15 +33,22 @@ class General extends React.Component {
     electron.shell.openItem(this.props.kapturesDir);
   }
 
+  openRecordDir = () => {
+    electron.shell.openItem(this.props.recordDir);
+  }
+
   render() {
     const {
       kapturesDir,
+      recordDir,
+      toggleRecordDir,
       openOnStartup,
       allowAnalytics,
       showCursor,
       highlightClicks,
       record60fps,
       enableShortcuts,
+      canPickRecordDir,
       loopExports,
       toggleSetting,
       toggleRecordAudio,
@@ -49,6 +57,7 @@ class General extends React.Component {
       audioDevices,
       recordAudio,
       pickKapturesDir,
+      pickRecordDir,
       setOpenOnStartup,
       updateShortcut,
       toggleShortcuts,
@@ -66,6 +75,7 @@ class General extends React.Component {
     }));
 
     const kapturesDirPath = tildify(kapturesDir);
+    const recordDirPath = tildify(recordDir);
     const tabIndex = category === 'general' ? 0 : -1;
     const fpsOptions = [{label: '30 FPS', value: false}, {label: '60 FPS', value: true}];
 
@@ -200,6 +210,27 @@ class General extends React.Component {
             onClick={() => toggleSetting('lossyCompression')}
           />
         </Item>
+
+        <Item
+          key="canPickRecordDir"
+          parentItem
+          title="Recording directory"
+          subtitle="Customise where raw recordings are stored"
+        >
+          <Switch tabIndex={tabIndex} checked={canPickRecordDir} onClick={toggleRecordDir}/>
+        </Item>
+        {
+          canPickRecordDir &&
+            <Item
+              key="pickTempDir"
+              title="Save recordings to…"
+              subtitle={recordDirPath}
+              tooltip={recordDir}
+              onSubtitleClick={this.openRecordDir}
+            >
+              <Button tabIndex={tabIndex} title="Choose" onClick={pickRecordDir}/>
+            </Item>
+        }
       </Category>
     );
   }
@@ -210,17 +241,21 @@ General.propTypes = {
   highlightClicks: PropTypes.bool,
   record60fps: PropTypes.bool,
   enableShortcuts: PropTypes.bool,
+  canPickRecordDir: PropTypes.bool,
   toggleSetting: PropTypes.elementType.isRequired,
   toggleRecordAudio: PropTypes.elementType.isRequired,
+  toggleRecordDir: PropTypes.elementType.isRequired,
   audioInputDeviceId: PropTypes.string,
   setAudioInputDeviceId: PropTypes.elementType.isRequired,
   audioDevices: PropTypes.array,
   recordAudio: PropTypes.bool,
   kapturesDir: PropTypes.string,
+  recordDir: PropTypes.string,
   openOnStartup: PropTypes.bool,
   allowAnalytics: PropTypes.bool,
   loopExports: PropTypes.bool,
   pickKapturesDir: PropTypes.elementType.isRequired,
+  pickRecordDir: PropTypes.elementType.isRequired,
   setOpenOnStartup: PropTypes.elementType.isRequired,
   updateShortcut: PropTypes.elementType.isRequired,
   toggleShortcuts: PropTypes.elementType.isRequired,
@@ -238,9 +273,11 @@ export default connect(
     record60fps,
     recordAudio,
     enableShortcuts,
+    canPickRecordDir,
     audioInputDeviceId,
     audioDevices,
     kapturesDir,
+    recordDir,
     openOnStartup,
     allowAnalytics,
     loopExports,
@@ -254,9 +291,11 @@ export default connect(
     record60fps,
     recordAudio,
     enableShortcuts,
+    canPickRecordDir,
     audioInputDeviceId,
     audioDevices,
     kapturesDir,
+    recordDir,
     openOnStartup,
     allowAnalytics,
     loopExports,
@@ -268,16 +307,20 @@ export default connect(
   ({
     toggleSetting,
     toggleRecordAudio,
+    toggleRecordDir,
     setAudioInputDeviceId,
     pickKapturesDir,
+    pickRecordDir,
     setOpenOnStartup,
     updateShortcut,
     toggleShortcuts
   }) => ({
     toggleSetting,
     toggleRecordAudio,
+    toggleRecordDir,
     setAudioInputDeviceId,
     pickKapturesDir,
+    pickRecordDir,
     setOpenOnStartup,
     updateShortcut,
     toggleShortcuts

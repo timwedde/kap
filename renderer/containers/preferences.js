@@ -3,7 +3,7 @@ import {Container} from 'unstated';
 import {ipcRenderer as ipc} from 'electron-better-ipc';
 import {defaultInputDeviceId} from '../../main/common/constants';
 
-const SETTINGS_ANALYTICS_BLACKLIST = ['kapturesDir'];
+const SETTINGS_ANALYTICS_BLACKLIST = ['kapturesDir', 'recordDir'];
 
 export default class PreferencesContainer extends Container {
   remote = electron.remote || false;
@@ -279,6 +279,27 @@ export default class PreferencesContainer extends Container {
 
     if (directories) {
       this.toggleSetting('kapturesDir', directories[0]);
+    }
+  }
+
+  toggleRecordDir = async () => {
+    const setting = 'canPickRecordDir';
+    const newVal = !this.state[setting];
+    this.toggleSetting(setting, newVal);
+  }
+
+  pickRecordDir = () => {
+    const {dialog, getCurrentWindow} = this.remote;
+
+    const directories = dialog.showOpenDialogSync(getCurrentWindow(), {
+      properties: [
+        'openDirectory',
+        'createDirectory'
+      ]
+    });
+
+    if (directories) {
+      this.toggleSetting('recordDir', directories[0]);
     }
   }
 

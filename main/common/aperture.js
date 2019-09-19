@@ -1,4 +1,6 @@
 'use strict';
+const path = require('path');
+const moment = require('moment');
 
 const createAperture = require('aperture');
 
@@ -97,7 +99,8 @@ const startRecording = async options => {
     record60fps,
     showCursor,
     highlightClicks,
-    recordAudio
+    recordAudio,
+    recordDir
   } = settings.store;
 
   apertureOptions = {
@@ -105,7 +108,8 @@ const startRecording = async options => {
     cropArea: cropperBounds,
     showCursor,
     highlightClicks,
-    screenId: displayId
+    screenId: displayId,
+    destinationPath: canPickRecordDir ? path.join(recordDir, `${now.format('YYYY-MM-DD')} at ${now.format('H.mm.ss')}.mp4`) : undefined
   };
 
   lastUsedSettings = {
