@@ -110,7 +110,7 @@ const startRecording = async options => {
     showCursor,
     highlightClicks,
     screenId: displayId,
-    destinationPath: canPickRecordDir ? path.join(recordDir, `${moment().toISOString()}.mp4`) : undefined
+    destinationPath: canPickRecordDir ? path.join(recordDir, `${moment().format("YYYY-MM-DD H.mm.ss")}.mp4`) : undefined
   };
 
   lastUsedSettings = {
