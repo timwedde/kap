@@ -100,7 +100,8 @@ const startRecording = async options => {
     showCursor,
     highlightClicks,
     recordAudio,
-    recordDir
+    recordDir,
+    canPickRecordDir,
   } = settings.store;
 
   apertureOptions = {
@@ -109,7 +110,7 @@ const startRecording = async options => {
     showCursor,
     highlightClicks,
     screenId: displayId,
-    destinationPath: canPickRecordDir ? path.join(recordDir, `${now.format('YYYY-MM-DD')} at ${now.format('H.mm.ss')}.mp4`) : undefined
+    destinationPath: canPickRecordDir ? path.join(recordDir, `${moment().toISOString()}.mp4`) : undefined
   };
 
   lastUsedSettings = {
